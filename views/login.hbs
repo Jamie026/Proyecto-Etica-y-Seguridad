@@ -1,0 +1,28 @@
+<main>
+    {{> navbar}}
+    {{> error_message}}
+
+    <section class="container">
+        <div class="row">
+            <!-- Formulario de Inicio de Sesión -->
+            <div class="col-6 mx-auto">
+                <form class="container-card text-center mt-5" action="/login" method="POST">
+                    <h2 class="container-subtitle text-uppercase my-3">Ingrese los datos solicitados</h2>
+                    <div class="input-group my-3">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                        <input type="text" class="form-control" placeholder="Username" name="usuario" aria-label="Username">
+                    </div>
+                    <div class="input-group my-3">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-lock"></i>
+                        </span>
+                        <input type="password" class="form-control" placeholder="Password" name="clave" aria-label="Password">
+                    </div>
+                    <input type="submit" class="btn btn-primary w-100" value="Aceptar">
+                </form>
+            </div>
+        </div>
+    </section>
+</main>

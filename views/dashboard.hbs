@@ -1,0 +1,94 @@
+<main>
+    {{> navbar_logged}}
+
+    {{> error_message}}
+    
+    <section class="container" id="dashboard">
+        <div class="row">
+            <!-- Tarjeta: Clientes Totales -->
+            <div class="col-3 mx-auto mt-4">
+                <div class="container-card d-flex justify-content-between align-items-center">
+                    <i class="fa-solid fa-users container-card-icon-1 fs-2"></i>
+                    <div class="d-flex flex-column align-items-end">
+                        <p class="container-subtitle my-0 text-center text-uppercase" id="total">0</p>
+                        <p class="container-mini-text">Clientes totales</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Tarjeta: Clientes con Tarjeta -->
+            <div class="col-3 mx-auto mt-4">
+                <div class="container-card d-flex justify-content-between align-items-center">
+                    <i class="fa-regular fa-credit-card container-card-icon-2 fs-2"></i>
+                    <div class="d-flex flex-column align-items-end">
+                        <p class="container-subtitle my-0 text-center text-uppercase" id="cards">0</p>
+                        <p class="container-mini-text">Clientes con Tarjeta</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Tarjeta: Clientes sin Tarjeta -->
+            <div class="col-3 mx-auto mt-4">
+                <div class="container-card d-flex justify-content-between align-items-center">
+                    <svg class="container-card-icon fs-1" xmlns="http://www.w3.org/2000/svg" width="50px" height="70px" viewBox="0 0 512.000000 512.000000">
+                        <!-- SVG content -->
+                        <g transform="translate(0,512) scale(0.1,-0.1)" fill="#E56767">
+                            <!-- Paths for SVG -->
+                            <path d="M845 4260 c-134 -9 -188 -22 -285 -68 -104 -49 -223 -168 -273 -272 -69 -144 -71 -173 -72 -830 l0 -585 28 -48 c74 -126 244 -144 341 -37 46 51 56 92 56 233 l0 117 1920 0 1920 0 0 -117 c0 -141 10 -182 56 -233 98 -108 272 -87 344 40 l25 45 0 585 c-1 657 -3 686 -72 830 -50 103 -168 222 -273 273 -155 75 -27 70 -1915 72 -929 1 -1739 -1 -1800 -5z m3466 -430 c63 -12 114 -49 143 -106 19 -36 21 -59 24 -281 l4 -243 -1922 0 -1922 0 4 243 c3 218 5 246 23 281 26 52 81 94 136 105 65 13 3443 14 3510 1z"/> 
+                            <path d="M329 1937 c-58 -31 -104 -98 -113 -168 -10 -73 2 -318 20 -414 23 -123 73 -215 169 -310 95 -95 184 -144 315 -172 78 -17 155 -18 990 -18 l905 0 45 25 c127 72 148 246 40 344 -21 19 -56 39 -77 45 -25 7 -323 11 -899 11 -543 0 -881 4 -915 10 -63 12 -114 49 -143 105 -17 33 -21 65 -26 229 -6 206 -11 226 -72 283 -60 56 -164 69 -239 30z"/> 
+                            <path d="M3446 1905 c-108 -38 -166 -174 -120 -283 9 -23 90 -112 219 -242 l205 -205 -191 -190 c-212 -211 -249 -262 -249 -341 0 -166 173 -268 315 -185 28 17 132 112 240 220 l190 191 205 -205 c130 -129 219 -210 242 -219 138 -58 298 47 298 194 0 78 -15 99 -233 317 l-211 213 201 202 c110 112 208 218 217 236 29 57 31 121 6 179 -26 62 -50 85 -114 114 -56 24 -122 22 -178 -7 -18 -9 -124 -107 -236 -217 l-202 -201 -213 211 c-173 173 -219 213 -252 222 -52 14 -91 13 -139 -4z"/>
+                        </g>
+                    </svg>
+                    <div class="d-flex flex-column align-items-end">
+                        <p class="container-subtitle my-0 text-center text-uppercase" id="notCards">0</p>
+                        <p class="container-mini-text">Clientes sin Tarjeta</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Tarjeta: Clientes con Quejas -->
+            <div class="col-3 mx-auto mt-4">
+                <div class="container-card d-flex justify-content-between align-items-center">
+                    <i class="fa-solid fa-triangle-exclamation container-card-icon-3 fs-2"></i>
+                    <div class="d-flex flex-column align-items-end">
+                        <p class="container-subtitle my-0 text-center text-uppercase" id="complains">0</p>
+                        <p class="container-mini-text">Clientes con Quejas</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 mx-auto mt-4">
+                <div class="container-card d-flex justify-content-between align-items-center">
+                    <i class="fa-solid fa-wallet text-dark fs-2"></i>
+                    <div class="d-flex flex-column align-items-end">
+                        <p class="container-subtitle my-0 text-center text-uppercase" id="balance">0</p>
+                        <p class="container-mini-text">Promedio balance de los clientes</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 mx-auto mt-4">
+                <div class="container-card d-flex justify-content-between align-items-center">
+                    <i class="fa-solid fa-hand-holding-dollar text-dark fs-2"></i>
+                    <div class="d-flex flex-column align-items-end">
+                        <p class="container-subtitle my-0 text-center text-uppercase" id="salary">0</p>
+                        <p class="container-mini-text">Promedio salario de los clientes</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Gráficos: Distribución de tipos de tarjeta -->
+            <div class="col-6 mx-auto mt-4">
+                <div class="container-card">
+                    <canvas id="cardType" class="w-100"></canvas>
+                </div>
+            </div>
+            <!-- Gráficos: Clientes activos e inactivos por país -->
+            <div class="col-6 mx-auto mt-4">
+                <div class="container-card">
+                    <canvas id="country" class="w-100"></canvas>
+                </div>
+            </div>
+            <!-- Gráficos: Abandono de clientes por edad -->
+            <div class="col-6 mx-auto my-4">
+                <div class="container-card">
+                    <canvas id="age" class="w-100"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

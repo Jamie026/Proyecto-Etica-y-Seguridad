@@ -1,0 +1,112 @@
+<main>
+    {{> navbar_logged}}
+
+    <section class="container mt-4" id="worker">
+        <div class="row">
+            <!-- Perfil del trabajador -->
+            <div class="col-5 mx-auto">
+                <div class="container-card">
+                    <div class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-secondary">
+                        <button title="Descargar mis datos" class="btn px-0 py-0" id="downloadData">
+                            <i class="fa-solid fa-download text-light"></i>
+                        </button>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <img class="d-block mx-auto profile-photo rounded-circle border border-dark mt-4 mb-3" src="/img/boy.png" alt="Icono cliente">
+                        </div>
+                        <div class="col-12">
+                            <h2 class="container-subtitle container-card-color text-uppercase mt-2 mb-3 text-center" id="usuario">
+                                {{this.workerData.nombre}} {{this.workerData.apellido}}
+                            </h2>
+                        </div>
+                        <div class="col-12">
+                            <p class="container-mini-text text-center">
+                                {{#if (equal this.workerData.administrador "1")}}
+                                    Tiene permisos de administrador
+                                {{else}}
+                                    No tiene permisos de administrador
+                                {{/if}}
+                            </p>
+                        </div>
+                        <div class="col-12">
+                            {{#if (equal this.workerData.usuarioVisible "1")}}
+                                <button class="btn btn-secondary w-100 my-2" id="visible">Ocultar mi usuario de otros trabajadores</button>
+                            {{else}}
+                                <button class="btn btn-secondary w-100 my-2" id="visible">Mostrar mi usuario a otros trabajadores</button>
+                            {{/if}}
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-danger w-100 my-2" id="delete-worker">Eliminar permanentemente mi cuenta</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Formulario de datos del usuario -->
+            <div class="col-6 mx-auto">
+                <form class="container-card" action="/dashboard/updateWorker" method="POST" id="updateWorker">
+                    <h2 class="container-subtitle text-center text-uppercase my-3">Datos registrados del usuario</h2>
+                    <div class="input-group my-3">
+                        <input type="text" class="form-control" value="{{this.workerData.nombre}}" placeholder="Nombre" name="nombre" aria-label="Nombre">
+                    </div>
+                    <div class="input-group my-3">
+                        <input type="text" class="form-control" value="{{this.workerData.apellido}}" placeholder="Apellido" name="apellido" aria-label="Apellido">
+                    </div>
+                    <div class="input-group my-3">
+                        <input type="email" class="form-control" value="{{this.workerData.email}}" placeholder="Correo electrónico" name="email" aria-label="Correo electrónico">
+                    </div>
+                    <div id="inputHelp" class="form-text text-center">El usuario y la clave deben tener al menos 8 caracteres y solo pueden contener letras y números.</div>
+                    <div class="input-group my-3">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                        <input type="text" class="form-control" value="{{this.workerData.usuario}}" placeholder="Username" name="usuario" aria-label="Username">
+                    </div>
+                    <div class="input-group my-3">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-lock"></i>
+                        </span>
+                        <input type="password" class="form-control" value="*********" placeholder="Password" name="clave" aria-label="Password">
+                    </div>
+                    <input type="submit" class="btn btn-primary w-100" value="Actualizar datos">
+                </form>
+            </div>
+        </div>
+    </section>
+    <table class="table" hidden data-cols-width="5, 20, 20, 40, 20, 30, 30" id="myData">
+        <thead>
+            <tr data-height="25">
+                <th scope="col" data-f-bold="true" data-f-color="FFFFFFFF" data-fill-color="FF007BFF" data-a-h="center">ID</th>
+                <th scope="col" data-f-bold="true" data-f-color="FFFFFFFF" data-fill-color="FF007BFF" data-a-h="center">Nombre</th>
+                <th scope="col" data-f-bold="true" data-f-color="FFFFFFFF" data-fill-color="FF007BFF" data-a-h="center">Apellido</th>
+                <th scope="col" data-f-bold="true" data-f-color="FFFFFFFF" data-fill-color="FF007BFF" data-a-h="center">Email</th>
+                <th scope="col" data-f-bold="true" data-f-color="FFFFFFFF" data-fill-color="FF007BFF" data-a-h="center">Usuario</th>
+                <th scope="col" data-f-bold="true" data-f-color="FFFFFFFF" data-fill-color="FF007BFF" data-a-h="center">Permiso de acceso</th>
+                <th scope="col" data-f-bold="true" data-f-color="FFFFFFFF" data-fill-color="FF007BFF" data-a-h="center">Permisos de administrador</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-height="30">
+                <th scope="row" data-t="n" data-a-h="center">{{this.workerData.idusuarios}}</th>
+                <td data-f-name="Poppins" data-f-sz="12" data-a-h="center">{{this.workerData.nombre}}</td>
+                <td data-f-name="Poppins" data-f-sz="12" data-a-h="center">{{this.workerData.apellido}}</td>
+                <td data-f-name="Poppins" data-f-sz="12" data-a-h="center">{{this.workerData.email}}</td>
+                <td data-f-name="Poppins" data-f-sz="12" data-a-h="center">{{this.workerData.usuario}}</td>
+                <td data-f-name="Poppins" data-f-sz="12" data-a-h="center">
+                    {{#if (equal this.workerData.permiso "1")}}
+                        Sí
+                    {{else}}
+                        No
+                    {{/if}}
+                </td>
+                <td data-f-name="Poppins" data-f-sz="12" data-a-h="center">
+                    {{#if (equal this.workerData.administrador "1")}}
+                        Sí
+                    {{else}}
+                        No
+                    {{/if}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</main>

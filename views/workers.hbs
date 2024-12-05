@@ -1,0 +1,156 @@
+<main>
+    {{> navbar_logged}}
+    {{> error_message}}
+    {{> success_message}}
+
+    <section class="container mt-4" id="workerList">
+        <div class="row">
+            <div class="col-4">
+                <div class="row">
+                    <div class="col-12">
+                        <form class="container-card container-sticky-item" action="/dashboard/workers" method="POST">
+                            <h2 class="container-subtitle text-center text-uppercase my-3">Filtro de empleados</h2>
+                            <div class="input-group my-3">
+                                <input type="text" class="form-control" placeholder="Nombre" name="nombre" aria-label="nombre">
+                            </div>
+                            <div class="input-group my-3">
+                                <input type="text" class="form-control" placeholder="Apellido" name="apellido" aria-label="apellido">
+                            </div>
+                            <input type="submit" class="btn btn-primary w-100" value="Buscar">
+                        </form>
+                    </div>
+                    <div class="col-12">
+                        <form class="container-card mt-5" action="/dashboard/register" method="POST" id="register">
+                            <h2 class="container-subtitle text-center text-uppercase my-3">Registrar trabajador</h2>
+                            <div class="input-group my-3">
+                                <input type="text" class="form-control" placeholder="Nombre" name="nombre" aria-label="Nombre">
+                            </div>
+                            <div class="input-group my-3">
+                                <input type="text" class="form-control" placeholder="Apellido" name="apellido" aria-label="Apellido">
+                            </div>
+                            <div class="input-group my-3">
+                                <input type="email" class="form-control" placeholder="Correo electrónico" name="email" aria-label="Correo electrónico">
+                            </div>
+                            <div class="input-group my-3">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+                                <input type="text" class="form-control" placeholder="Username" name="usuario" aria-label="Username">
+                            </div>
+                            <div class="input-group my-3">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-lock"></i>
+                                </span>
+                                <input type="password" class="form-control" placeholder="Password" name="clave" aria-label="Password">
+                            </div>
+                            <input type="submit" class="btn btn-primary w-100" value="Registrar">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-8">
+                <section class="row">
+                    {{#each this.workers}}
+                    <div class="col-10 mx-auto mb-4">
+                        <button class="container-card container-card-accordion rounded-bottom-0">{{this.nombre}} {{this.apellido}}</button>
+                        <div class="panel bg-body-tertiary border border-dark">
+                            <div class="container-fluid">
+                                <div class="row d-flex justify-content-center align-items-center">
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <img class="d-block mx-auto profile-photo rounded-circle border border-dark mt-4 mb-3" src="/img/boy.png" alt="Icono trabajador">
+                                            </div>
+                                            <div class="col-12">
+                                                <h2 class="container-mini-text text-center">ID: 
+                                                    {{this.idusuarios}}
+                                                </h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-9">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <h2 class="container-subtitle container-card-color text-uppercase my-4">Información del trabajador</h2>
+                                                </div>
+
+                                                <div class="col-4">
+                                                    <p class="container-mini-text my-2 text-center">Usuario:</p>
+                                                </div>
+                                                <div class="col-8">
+                                                    <p class="container-mini-text my-2 text-center">
+                                                        {{#if (equal this.usuarioVisible "1")}}
+                                                            {{this.usuario}}
+                                                        {{else}}
+                                                            Restringido
+                                                        {{/if}}
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-4">
+                                                    <p class="container-mini-text my-2 text-center">Email:</p>
+                                                </div>
+                                                <div class="col-8">
+                                                    <p class="container-mini-text my-2 text-center">{{this.email}}</p>
+                                                </div>
+
+                                                <div class="col-4">
+                                                    <p class="container-mini-text my-2 text-center">Permiso de acceso:</p>
+                                                </div>
+                                                <div class="col-8">
+                                                    {{#if (equal this.permiso "1")}}
+                                                        <p class="container-mini-text my-2 text-center">Concedido</p>
+                                                    {{else}}
+                                                        <p class="container-mini-text my-2 text-center">Sin permiso</p>
+                                                    {{/if}}
+                                                </div>
+
+                                                <div class="col-4">
+                                                    <p class="container-mini-text my-2 text-center">Administrador:</p>
+                                                </div>
+                                                <div class="col-8">
+                                                    {{#if (equal this.administrador "1")}}
+                                                        <p class="container-mini-text my-2 text-center">Concedido</p>
+                                                    {{else}}
+                                                        <p class="container-mini-text my-2 text-center">Sin permiso</p>
+                                                    {{/if}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <footer class="row mt-3 border-top border-dark py-2">
+                                    <div class="col-6 text-center">
+                                        {{#if (equal this.permiso "1")}}
+                                            <a class="btn btn-danger my-2" href="/dashboard/updateAcceso/{{this.idusuarios}}/0">
+                                                Remover permiso de acceso
+                                            </a>
+                                        {{else}}
+                                            <a class="btn btn-success my-2" href="/dashboard/updateAcceso/{{this.idusuarios}}/1">
+                                                Otorgar permiso de acceso
+                                            </a>
+                                        {{/if}}
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        {{#if (equal this.administrador "1")}}
+                                            <a class="btn btn-danger my-2" href="/dashboard/updateAdministrador/{{this.idusuarios}}/0">
+                                                Remover permiso de administrador
+                                            </a>
+                                        {{else}}
+                                            <a class="btn btn-success my-2" href="/dashboard/updateAdministrador/{{this.idusuarios}}/1">
+                                                Otorgar permiso de administrador
+                                            </a>
+                                        {{/if}}
+                                    </div>
+                                </footer>
+                            </div>
+                        </div>
+                    </div>  
+                    {{/each}}
+                </section>
+            </div>
+        </div>
+    </section>
+</main>
