@@ -1,5 +1,5 @@
 <body>
-    <div class="container">
+    <div class="container-fluid">
         <h1>📊 Sistema de Análisis de Churn y Administración de Empleados</h1>
         <p>
             Este proyecto es una <strong>aplicación web</strong> diseñada para
