@@ -6,11 +6,21 @@ const nodemailer = require("nodemailer");
 const jsonwebtoken = require("jsonwebtoken");
 require("dotenv").config();
 
+/**
+ * Retorna una cadena de texto encriptada con AES256.
+ * @param {String} data - Cadena de texto a encriptar.
+ * @returns Cadena de texto encriptada.
+ */
 function aes256Encrypt(data) {
     const key = process.env.AES_256;
     return aes256.encrypt(key, data);
 }
 
+/**
+ * Retorna una cadena de texto desencriptada con AES256 y con la llave publica.
+ * @param {String} encryptedData -Cadena de texto encriptada con AES256.
+ * @returns Cadena de texto desencriptada.
+ */
 function aes256Decrypt(encryptedData) {
     const key = process.env.AES_256;
     return aes256.decrypt(key, encryptedData);
@@ -24,16 +34,33 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+/**
+ * Encripta una contraseña utilizando bcrypt para almacenarla de manera segura en la base de datos.
+ * @param {string} password - La contraseña que se desea encriptar.
+ * @returns Contraseña encriptada.
+ */
 function encryptPassword(password) {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
     return hash;
 }
 
+/**
+ * Compara la contraseña ingresada por el usuario con la hasheada
+ * @param {String} password - Contraseña ingresada por el usuario. 
+ * @param {String} hashedPassword - Contraseña correcta hasheada.
+ * @returns True si la contraseña es correcta, false caso contrario
+ */
 function comparePassword(password, hashedPassword) {
     return bcrypt.compareSync(password, hashedPassword);
 }
 
+/**
+ * Envia un correo electrónico de autenticación al usuario con un código de verificación.
+ * @param {string} email - El correo electrónico del usuario al que se enviará el código.
+ * @param {object} response - La respuesta HTTP que se utilizará para renderizar la plantilla de correo electrónico.
+ * @returns El token enviado al usuario en caso de que el correo se haya enviado correctamente, caso contrario  retorna null.
+ */
 async function sendAuthEmail(email, response) {
     try {
         const token = Math.floor(1000 + Math.random() * 9000);
@@ -57,6 +84,15 @@ async function sendAuthEmail(email, response) {
     }
 }
 
+/**
+ * Envia un correo electrónico de confirmación al usuario con información sobre el uso de sus datos y acceso a la plataforma.
+ * @param {string} email - El correo electrónico del usuario al que se enviará el correo de confirmación.
+ * @param {string} username - El nombre de usuario del usuario.
+ * @param {string} password - La contraseña del usuario.
+ * @param {string} deleteAccountLink - El enlace para eliminar la cuenta del usuario.
+ * @param {object} response - La respuesta HTTP que se utilizará para renderizar la plantilla de correo electrónico.
+ * @returns True si el correo se envía correctamente, de lo contrario, resuelve a false.
+ */
 async function sendConfirmationEmail(email, username, password, deleteAccountLink, response) {
     try {
         const html = await new Promise((resolve, reject) => {
@@ -79,6 +115,11 @@ async function sendConfirmationEmail(email, username, password, deleteAccountLin
     }
 }
 
+/**
+ * Crea un JSON Web Token con proposito de autenticación.
+ * @param {*} data - Algun dato del usuario que se quiera utilizar para crear el token.
+ * @returns El token generado con el dato dado.
+ */
 function createToken(data) {
     return jsonwebtoken.sign(
         { data: data }, 
@@ -87,6 +128,11 @@ function createToken(data) {
     );
 }
 
+/**
+ * Crea una Cookie con un JSON Web Token con proposito de autenticación.
+ * @param {String} usuario - Dato del usuario para crear el JWT, el nombre usuario en este caso.
+ * @param {Object} response - La respuesta HTTP en la que se almacenara la cookie.
+ */
 function createCookie(usuario, response) {
     const token = createToken(usuario);
     const cookieOptions = {
@@ -99,6 +145,11 @@ function createCookie(usuario, response) {
     response.cookie("tokenKey", token, cookieOptions);
 }
 
+/**
+ * Verifica si hay una cookie de autenticación válida en la solicitud.
+ * @param {Object} request - La solicitud HTTP que contiene la cookie de autenticación.
+ * @returns True en caso de que la cookie sea exista y sea válida, false en caso contrario.
+ */
 async function checkCookie(request) {
     try {
         const cookieJWT = request.headers.cookie.split("; ").find(cookie => cookie.startsWith("tokenKey=")).slice(9); 

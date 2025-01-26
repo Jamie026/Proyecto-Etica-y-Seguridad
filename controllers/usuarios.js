@@ -1,21 +1,41 @@
 const pool = require("./../config/db");
 const { comparePassword, sendAuthEmail, createCookie, aes256Encrypt, aes256Decrypt } = require("./../config/authentication");
 
+/**
+ * Busca los mensajes enviados en la solicitud HTTP para continuar con el renderizado de la pagina de inicio para usuarios no logueados.
+ * @param {Object} request - La solicitud HTTP que contiene los datos del usuario y las cookies.
+ * @param {Object} response - La respuesta HTTP que se le enviara al cliente.
+ */
 function homePage(request, response) {
     const error = request.query.error || null; 
     const success = request.query.success || null;
     return response.render("main", { error, success });
 }
 
+/**
+ * Renderiza la pagina de políticas de privacidad de la pagina.
+ * @param {Object} request - La solicitud HTTP que contiene los datos del usuario y las cookies.
+ * @param {Object} response - La respuesta HTTP que se le enviara al cliente.
+ */
 function politicy(request, response) {
     return response.render("politicy");
 }
 
+/**
+ * Renderiza la pagina de logueo de los trabajadores.
+ * @param {Object} request - La solicitud HTTP que contiene los datos del usuario y las cookies.
+ * @param {Object} response - La respuesta HTTP que se le enviara al cliente.
+ */
 function loginGET(request, response) {
     const error = request.query.error || null; 
     return response.render("login", { error }); 
 }
 
+/**
+ * Verifica si los datos ingresados por el usuario son validos para continuar con la MFA.
+ * @param {Object} request - La solicitud HTTP que contiene los datos del usuario y las cookies.
+ * @param {Object} response - La respuesta HTTP que se le enviara al cliente.
+ */
 async function loginUsuarioPOST(request, response) {
     const { usuario, clave } = request.body;
     try {
@@ -36,6 +56,11 @@ async function loginUsuarioPOST(request, response) {
     }
 }
 
+/**
+ * Verifica el token del MFA para continuar con la renderización del dashboard.
+ * @param {Object} request - La solicitud HTTP que contiene los datos del usuario y las cookies.
+ * @param {Object} response - La respuesta HTTP que se le enviara al cliente.
+ */
 function authenticationUsuario(request, response) {
     const userToken = request.body.codigo_mfa;
     const tokenDesencriptada = aes256Decrypt(request.session.token);
@@ -48,6 +73,11 @@ function authenticationUsuario(request, response) {
         return response.redirect("/login?error=Error de autenticación.");
 }
 
+/**
+ * Elimina la cuenta de un trabajador por medio del enlance enviado a su correo.
+ * @param {Object} request - La solicitud HTTP que contiene los datos del usuario y las cookies.
+ * @param {Object} response - La respuesta HTTP que se le enviara al cliente.
+ */
 async function deleteByEmail(request, response) {
     try{
         const usuarioDesencriptado = aes256Decrypt(request.params.id);

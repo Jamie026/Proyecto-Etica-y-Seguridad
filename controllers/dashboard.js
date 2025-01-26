@@ -1,15 +1,30 @@
 const { encryptPassword, sendConfirmationEmail, createCookie, aes256Encrypt, aes256Decrypt } = require("./../config/authentication");
 const pool = require("./../config/db");
 
+/**
+ * Busca los mensajes enviados en la solicitud HTTP para continuar con el renderizado de la pagina de inicio para usuarios logueados.
+ * @param {Object} request - La solicitud HTTP que contiene los datos del usuario y las cookies.
+ * @param {Object} response - La respuesta HTTP que se le enviara al cliente.
+ */
 function homePage(request, response) {
     const error = request.query.error || null; 
     return response.render("dashboard", { error });
 }
-
+/**
+ * Renderiza la pagina de clientes registrados.
+ * @param {Object} request - La solicitud HTTP que contiene los datos del usuario y las cookies.
+ * @param {Object} response - La respuesta HTTP que se le enviara al cliente.
+ */
 async function customers(request, response) {
     return response.render("customers");
 }
 
+/**
+ * Busca clientes haciendo un filtro en los apellidos.
+ * @param {Object} request - La solicitud HTTP que contiene los datos del usuario y las cookies.
+ * @param {Object} response - La respuesta HTTP que se le enviara al cliente.
+ * @returns Renderiza la pagina de clientes con resultados del filtro. Si se envio la contraseña de encriptación en la solicitud HTTP los datos apareceran normal, caso contrario apareceran ocultos.
+ */
 async function customersFilter(request, response) {
     const { surname, clave } = request.body;
     const selectSql = clave ? "SELECT decrypt_customer_data(?, ?) AS result" : "SELECT estandar_customer_data(?) AS result";    
@@ -26,12 +41,22 @@ async function customersFilter(request, response) {
     }
 }
 
+/**
+ * Renderiza la pagina de trabajadores registrados.
+ * @param {Object} request - La solicitud HTTP que contiene los datos del usuario y las cookies.
+ * @param {Object} response - La respuesta HTTP que se le enviara al cliente.
+ */
 function workers(request, response){
     const error = request.query.error || null; 
     const success = request.query.success || null;
     return response.render("workers", { error, success });    
 }
 
+/**
+ * Verifica los datos enviados para registrar a un trabajador y envia un correo de confirmación.
+ * @param {Object} request - La solicitud HTTP que contiene los datos del usuario y las cookies.
+ * @param {Object} response - La respuesta HTTP que se le enviara al cliente.
+ */
 async function registerWorker(request, response) {
     const { nombre, apellido, clave, usuario, email } = request.body;  
     let encriptada = encryptPassword(clave);
@@ -53,6 +78,11 @@ async function registerWorker(request, response) {
     }
 }
 
+/**
+ * Actualiza el permiso de acceso al logueo de un trabajador.
+ * @param {Object} request - La solicitud HTTP que contiene los datos del usuario y las cookies.
+ * @param {Object} response - La respuesta HTTP que se le enviara al cliente.
+ */
 async function updateAcceso(request, response) {
     try{
         const usuarioId = request.params.id;
@@ -67,6 +97,11 @@ async function updateAcceso(request, response) {
     }
 }
 
+/**
+ * Actualiza el permiso de administrador de un trabajador.
+ * @param {Object} request - La solicitud HTTP que contiene los datos del usuario y las cookies.
+ * @param {Object} response - La respuesta HTTP que se le enviara al cliente.
+ */
 async function updateAdministrador(request, response) {
     try{
         const usuarioId = request.params.id;
@@ -81,6 +116,12 @@ async function updateAdministrador(request, response) {
     }
 }
 
+/**
+ * Busca trabajadores haciendo un filtro en los nombres y apellidos.
+ * @param {Object} request - La solicitud HTTP que contiene los datos del usuario y las cookies.
+ * @param {Object} response - La respuesta HTTP que se le enviara al cliente.
+ * @returns Renderiza la pagina de trabajadores con resultados del filtro.
+ */
 async function workersFilter(request, response) {
     const { nombre, apellido } = request.body;
     try {
@@ -95,11 +136,21 @@ async function workersFilter(request, response) {
     }
 };
 
+/**
+ * Renderiza la pagina con los datos del trabajador logueado.
+ * @param {Object} request - La solicitud HTTP que contiene los datos del usuario y las cookies.
+ * @param {Object} response - La respuesta HTTP que se le enviara al cliente.
+ */
 async function profile(request, response) {
     const workerData = JSON.parse(aes256Decrypt(request.session.user));
     return response.render("profile", { workerData, error: workerData ? null : "Error al cargar los datos." });
 }
 
+/**
+ * Elimina la cuenta del trabajador logueado y las cookies.
+ * @param {Object} request - La solicitud HTTP que contiene los datos del usuario y las cookies.
+ * @param {Object} response - La respuesta HTTP que se le enviara al cliente.
+ */
 async function deleteWorker(request, response) {
     try {
         const workerData = JSON.parse(aes256Decrypt(request.session.user));
@@ -116,6 +167,11 @@ async function deleteWorker(request, response) {
     }
 }
 
+/**
+ * Actualiza la visibilidad del nombre de usuario del trabajador logueado para los demas trabajadores.
+ * @param {Object} request - La solicitud HTTP que contiene los datos del usuario y las cookies.
+ * @param {Object} response - La respuesta HTTP que se le enviara al cliente.
+ */
 async function changePrivacity(request, response) {
     try {
         const workerData = JSON.parse(aes256Decrypt(request.session.user));
@@ -133,6 +189,11 @@ async function changePrivacity(request, response) {
     }
 }
 
+/**
+ * Actualiza los datos registrados del trabajador logueado.
+ * @param {Object} request - La solicitud HTTP que contiene los datos del usuario y las cookies.
+ * @param {Object} response - La respuesta HTTP que se le enviara al cliente.
+ */
 async function updateWorker(request, response) {
     const { nombre, apellido, clave, usuario, email } = request.body;
     try {
@@ -149,6 +210,11 @@ async function updateWorker(request, response) {
     }
 }
 
+/**
+ * Cierra la sesión del trabajador logueado y elimina la cookie.
+ * @param {Object} request - La solicitud HTTP que contiene los datos del usuario y las cookies.
+ * @param {Object} response - La respuesta HTTP que se le enviara al cliente.
+ */
 function logout(request, response) {
     request.session.destroy((error) => {
         if (error) 

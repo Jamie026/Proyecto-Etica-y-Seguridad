@@ -11,6 +11,9 @@ const legendMargin = {
 
 const Utils = ChartUtils.init();
 
+/**
+ * Solicita y muestra informacion general sobre los clientes registrados.
+ */
 export async function getGeneralInformation() {
     try {
         const result = await axios.get("https://localhost:3000/storage/generalInformation");
@@ -40,6 +43,9 @@ export async function getGeneralInformation() {
     }
 }
 
+/**
+ * Solicita y muestra informacion gsobre la cantidad de clientes en cada país.
+ */
 async function getCustomersByCountry(container) {
     const result = await axios.get("https://localhost:3000/storage/customersByCountry");
     const customersData = result.data.data
@@ -70,6 +76,9 @@ async function getCustomersByCountry(container) {
     });
 }
 
+/**
+ * Solitica y muestra informacion sobre la cantidad total de cada tipo de tarjeta de los clientes.
+ */
 async function getCardTypes(container) {
     const result = await axios.get("https://localhost:3000/storage/cardTypes");
     const cardData = result.data.data;    
@@ -107,19 +116,17 @@ async function getCardTypes(container) {
     });
 }
 
+/**
+ * Solitica y muestra informacion sobre la edad de los clientes que se han salido.
+ */
 async function getAgeCustomersExited(container) {
     const result = await axios.get("https://localhost:3000/storage/ageCustomersExited");
     const ageData = result.data.data.map(item => item.age);
     container.height = 400;
 
     const rangos = ["18-25", "26-35", "26-35", "36-45", "46-60", "61-75", "76+"];
-
     const conteoRangos = Object.fromEntries(rangos.map(rango => [rango, 0]));
-
     ageData.forEach(edad => conteoRangos[edad]++);
-
-    console.log(conteoRangos);
-    
 
     const datasets = [{
         label: "Clientes retirados",

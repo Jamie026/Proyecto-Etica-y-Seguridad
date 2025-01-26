@@ -1,3 +1,6 @@
+/**
+ * Asigna funciones de activación a ciertos elementos con ayuda de su ID.
+ */
 export function profileActions() {
     const actions = {
         "delete-worker": deleteWorker,
@@ -11,12 +14,18 @@ export function profileActions() {
     });
 }
 
+/**
+ * Extrae la información del elemento tabla HTML con ID "myData" y lo convierte a EXCEL para descargarlo.
+ */
 function downloadData() {
     TableToExcel.convert(document.getElementById("myData"), {
         name: "DatosPersonales.xlsx"
     });
 }
 
+/**
+ * Actualiza la visibilidad del nombre de usuario del trabajador logueado para los demas trabajadores.
+ */
 async function chanceVisibily() {
     try {
         const result = await axios.get("https://localhost:3000/dashboard/changePrivacity");
@@ -29,6 +38,9 @@ async function chanceVisibily() {
     }
 }
 
+/**
+ * Elimina la cuenta del trabajador logueado y las cookies.
+ */
 async function deleteWorker() {
     try {
         alertify.confirm("Confirmación de eliminación", "¿Seguro que quiere eliminar su cuenta?", async () => {
@@ -43,6 +55,9 @@ async function deleteWorker() {
     }
 }
 
+/**
+ * Permite la funcionalidad de acordeon para ciertos elementos HTML con la clase "container-card-accordion".
+ */
 export function activeAccordion() {
     const accordion = document.getElementsByClassName("container-card-accordion");
     Array.from(accordion).forEach(card => {

@@ -1,4 +1,7 @@
-export function registrarUsuario() {        
+/**
+ * Procesa el formulario para registrar un trabajador.
+ */
+export function registerWorker() {        
     sendForm((result) => alertify.success("Trabajador registrado correctamente"), 
     (error) => {
         console.error("Error al enviar el formulario: ", error);    
@@ -8,7 +11,10 @@ export function registrarUsuario() {
     }, "register");
 }
 
-export function updateUsuario() {
+/**
+ * Procesa el formulario para actualizar la información registrada de un trabajador.
+ */
+export function updateWorker() {
     sendForm((result) => window.location.reload(), 
     (error) => {
         console.error("Error al enviar el formulario: ", error);
@@ -18,6 +24,12 @@ export function updateUsuario() {
     }, "updateWorker");
 }
 
+/**
+ *  Extrae la información del formulario y la manda al servidor.
+ * @param {function} successCallback - Función a ejecutar en caso de éxito.
+ * @param {function} errorCallback - Función a ejecutar en caso de error.
+ * @param {object} element - ID del formulario HTML.
+ */
 function sendForm(successCallback, errorCallback, element) {
     document.getElementById(element).addEventListener("submit", async (e) => {
         e.preventDefault();
