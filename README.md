@@ -216,6 +216,13 @@
                 <pre><code>npm install</code></pre>
             </li>
             <li>
+                Crear llave y certificado para servidor HTTPS. Instrucciones:
+                <a 
+                    href="https://medium.com/@nitinpatel_20236/how-to-create-an-https-server-on-localhost-using-express-366435d61f28"
+                    >How To Create an HTTPS Server on Localhost using Express</a
+                >.
+            </li>
+            <li>
                 Configurar las variables de entorno en un archivo
                 <code>.env</code>.
             </li>
