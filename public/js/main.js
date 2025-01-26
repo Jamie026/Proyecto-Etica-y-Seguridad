@@ -1,5 +1,5 @@
 import { getGeneralInformation } from "./dashboard.js";
-import { registerWorker, registerWorker, updateWorker } from "./form.js"
+import { registerWorker, updateWorker } from "./form.js"
 import { profileActions, activeAccordion } from "./worker.js";
 
 window.onload = () => {
