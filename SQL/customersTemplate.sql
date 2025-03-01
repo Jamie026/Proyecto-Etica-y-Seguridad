@@ -152,44 +152,38 @@ SELECT estandar_customer_data(INPUT) AS result;
 /*
 
 Los delimitadores en MySQL son utilizados para definir el final de una instrucción o bloque de código. 
-Por defecto, MySQL utiliza el punto y coma (;) como delimitador. Sin embargo, cuando se definen procedimientos almacenados, funciones o triggers, 
-es necesario cambiar temporalmente este delimitador para permitir que el código contenga múltiples instrucciones que también pueden finalizar con un punto y coma.
+Por defecto, MySQL utiliza el punto y coma (;) como delimitador. Sin embargo, cuando se definen procedimientos almacenados, funciones o triggers, es necesario cambiar temporalmente este delimitador para permitir que el código contenga múltiples instrucciones que también pueden finalizar con un punto y coma.
 
 Uso de DELIMITER
 1. Cambio de Delimitador:
 
-DELIMITER $$ cambia el delimitador de instrucciones a $$ (o a cualquier otro símbolo que elijas).
-Esto permite que el código que sigue pueda usar ; como parte de sus instrucciones internas sin que MySQL lo interprete como el final de la declaración.
+DELIMITER $$ cambia el delimitador de instrucciones a $$ (o a cualquier otro símbolo que pongamos). Esto permite que el código que sigue pueda usar ; como parte de sus instrucciones internas sin que MySQL lo interprete como el final de la declaración.
 
 2.Restablecimiento del Delimitador:
 
 Después de terminar con la definición del procedimiento, función o trigger, es común restablecer el delimitador al valor predeterminado con DELIMITER ;
 
 DETERMINISTIC
-Definición: La cláusula DETERMINISTIC indica que la función siempre devolverá el mismo resultado si se le proporcionan los mismos valores de entrada. 
-Esto significa que la función no tiene efectos secundarios y no depende de datos externos que puedan cambiar.
+Definición: La cláusula DETERMINISTIC indica que la función siempre devolverá el mismo resultado si se le proporcionan los mismos valores de entrada. Esto significa que la función no tiene efectos secundarios y no depende de datos externos que puedan cambiar.
 
 Ejemplo de Uso:
 
-Si tienes una función que simplemente realiza cálculos matemáticos basados en los parámetros de entrada, puede ser marcada como DETERMINISTIC 
-porque para las mismas entradas siempre obtendrás el mismo resultado.
+Si tenemos una función que simplemente realiza cálculos matemáticos basados en los parámetros de entrada, puede ser marcada como DETERMINISTIC porque para las mismas entradas siempre obtendrás el mismo resultado.
+
 Importancia:
 
-Marcar una función como DETERMINISTIC permite a MySQL optimizar el rendimiento, ya que puede almacenar en caché el resultado y evitar recalcularlo 
-cada vez que se llama con los mismos argumentos.
+Marcar una función como DETERMINISTIC permite a MySQL optimizar el rendimiento, ya que puede almacenar en caché el resultado y evitar recalcularlo cada vez que se llama con los mismos argumentos.
 Si la función no es DETERMINISTIC, se debe marcar como NOT DETERMINISTIC, lo que significa que el resultado puede variar.
 
 READS SQL DATA
-Definición: La cláusula READS SQL DATA indica que la función solo leerá datos de las tablas de la base de datos, pero no modificará ninguna. 
-Esto implica que la función no realiza operaciones como INSERT, UPDATE o DELETE.
+Definición: La cláusula READS SQL DATA indica que la función solo leerá datos de las tablas de la base de datos, pero no modificará ninguna. Esto implica que la función no realiza operaciones como INSERT, UPDATE o DELETE.
 
 Ejemplo de Uso:
 
 Una función que consulta datos de una tabla y devuelve resultados, pero no realiza cambios en esos datos, se puede definir con READS SQL DATA.
+
 Importancia:
 
-Especificar READS SQL DATA ayuda a MySQL a comprender el comportamiento de la función, lo que puede ser útil para optimizaciones y 
-para garantizar la seguridad en las operaciones de la base de datos.
-Si tu función modifica datos, deberías utilizar MODIFIES SQL DATA en su lugar.
+Especificar READS SQL DATA ayuda a MySQL a comprender el comportamiento de la función, lo que puede ser útil para optimizaciones y para garantizar la seguridad en las operaciones de la base de datos. Si la función modifica datos, deberiamos utilizar MODIFIES SQL DATA en su lugar.
 
 */
